@@ -64,7 +64,7 @@ def validate(device,
       n_batches += 1
       #Compute netvlads embedding
       imgs, labels = imgs.to(device), labels.to(device)
-      embeddings = model.encoder(imgs)
+      embeddings = model(imgs)
       #Loss
       loss = criterion(embeddings, labels).to(device)
       epoch_loss += loss.item()
