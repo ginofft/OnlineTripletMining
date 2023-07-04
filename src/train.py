@@ -25,11 +25,9 @@ def train(device,
     n_batches += 1
     #Compute netvlads embedding
     imgs, labels = imgs.to(device), labels.to(device)
-    embeddings = model.encoder(imgs)
-    netvlads = model.netvlad(embeddings)
-
+    embeddings = model
     #Loss & Backprop
-    loss = criterion(netvlads, labels).to(device)
+    loss = criterion(embeddings, labels).to(device)
     optimizer.zero_grad() #zero_grad for each batch
     loss.backward()
     optimizer.step()
@@ -67,15 +65,13 @@ def validate(device,
       #Compute netvlads embedding
       imgs, labels = imgs.to(device), labels.to(device)
       embeddings = model.encoder(imgs)
-      netvlads = model.netvlad(embeddings)
-
       #Loss
-      loss = criterion(netvlads, labels).to(device)
+      loss = criterion(embeddings, labels).to(device)
       epoch_loss += loss.item()
       
-      netvlads = netvlads.cpu()
+      embeddings = embeddings.cpu()
       accuracy_vector = torch.zeros(P*K)
-      similarity_matrix = np.einsum('id, jd -> ij', netvlads, netvlads)
+      similarity_matrix = np.einsum('id, jd -> ij', embeddings, embeddings)
       sorted_indices = np.argsort(similarity_matrix, axis=1)
       for row_index,row in enumerate(sorted_indices):
         row = row[::-1]
