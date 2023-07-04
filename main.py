@@ -101,7 +101,7 @@ if __name__ == "__main__":
       optimizer = optim.Adam(filter(lambda p: p.requires_grad, model.parameters()), 
                              lr = opt.lr)
     else:
-      pass #TODO SGD optimizer
+      raise Exception('SGD has not been implemented yet!!')
 
     if opt.loadPath: #loading stuff
       startEpoch, train_loss, val_loss, accuracy = load_checkpoint(Path(opt.loadPath),
@@ -121,7 +121,6 @@ if __name__ == "__main__":
       epoch_val_loss, epoch_accuracy = validate(device, model, 
                                 valSet, opt.P, opt.K,
                                 criterion)
-
       state_dict = {
             'epoch': epoch,
             'train_loss': epoch_train_loss,
