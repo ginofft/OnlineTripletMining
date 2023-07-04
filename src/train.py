@@ -25,7 +25,7 @@ def train(device,
     n_batches += 1
     #Compute netvlads embedding
     imgs, labels = imgs.to(device), labels.to(device)
-    embeddings = model
+    embeddings = model(imgs)
     #Loss & Backprop
     loss = criterion(embeddings, labels).to(device)
     optimizer.zero_grad() #zero_grad for each batch
