@@ -70,9 +70,9 @@ if __name__ == "__main__":
   
   #Setup model
   if opt.loadPath:
-    model = construct_model(opt.encoder, opt.n_vocabs, use_pretrained_weight= False)
+    model = construct_model(opt.encoder, use_pretrained_weight= False)
   else:
-    model = construct_model(opt.encoder, opt.n_vocabs, use_pretrained_weight= True)
+    model = construct_model(opt.encoder, use_pretrained_weight= True)
   model = model.to(device)
 
   if opt.mode.lower() == 'train':
