@@ -93,8 +93,6 @@ class OnlineTripletSampler(torch.utils.data.BatchSampler):
       if len(batch) == self.batch_size:
         yield batch
         batch = []
-      if len(batch) > 1 and not self.drop_last:
-        yield batch
 
   def __len__(self):
     if self.drop_last:
