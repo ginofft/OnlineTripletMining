@@ -26,7 +26,9 @@ class EmbeddingRetriever:
     
     def export_embeddings(self):
         if self.path is None:
-            self.path = Path('netvlads.h5')
+            self.path = Path('embeddings.h5')
+        else:
+            self.path = self.path/"embeddings.h5"
         self.path.parent.mkdir(exist_ok=True, parents = True)
         if (len(self.names) == 0) or (len(self.embeddings) == 0) or (len(self.names) == len(self.embeddings)):
             self._calculate_embeddings() 
