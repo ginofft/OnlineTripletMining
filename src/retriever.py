@@ -29,7 +29,7 @@ class EmbeddingRetriever:
             self.path = Path('netvlads.h5')
         self.path.parent.mkdir(exist_ok=True, parents = True)
         if (len(self.names) == 0) or (len(self.embeddings) == 0) or (len(self.names) == len(self.embeddings)):
-            self._calculate_embeddings(self.model) 
+            self._calculate_embeddings() 
         with h5py.File(str(self.path), "a", libver="latest") as f:
             for i, name  in enumerate(self.names):
                 try:
