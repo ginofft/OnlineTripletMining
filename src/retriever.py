@@ -61,13 +61,13 @@ class EmbeddingRetriever:
                             std = [0.229, 0.224, 0.225])
         ])
 
-        query_netvlads = []
+        query_embeddings = []
         for image in lst_image:
             image = default_preprocessing(image).unsqueeze(0)
-            query_netvlads.append(self._calculate_embedding(image))
-        query_netvlads = np.array(query_netvlads)
+            query_embeddings.append(self._calculate_embedding(image))
+        query_embeddings = np.array(query_embeddings)
 
-        similarity_matrix = np.einsum('id, jd -> ij', query_netvlads, self.netvlads)
+        similarity_matrix = np.einsum('id, jd -> ij', query_embeddings, self.embeddings)
         sorted_matrix = np.argsort(similarity_matrix, axis = 1)
         n_cols = sorted_matrix.shape[1]-1
         results = []
