@@ -20,15 +20,15 @@ class EmbeddingRetriever:
 
         self.names = []
         self.embeddings = []
-        if self.path is not None:
+        if (self.path is not None) and (self.path.suffix == '.h5'):
             print("Loading saved embedding from: ", str(self.path))
             self.names, self.embeddings = self.load_embedding()
     
     def export_embeddings(self):
-        if self.path is None:
+        if (self.path is None):
             self.path = Path('embeddings.h5')
-        else:
-            self.path = self.path/"embeddings.h5"
+        if (self.path.suffix != '.h5') :
+            self.path = self.path + '.h5'
         self.path.parent.mkdir(exist_ok=True, parents = True)
         if (len(self.names) == 0) or (len(self.embeddings) == 0) or (len(self.names) == len(self.embeddings)):
             self._calculate_embeddings() 
@@ -50,6 +50,7 @@ class EmbeddingRetriever:
             for name in names:
                 embeddings.append(r[name][()])
             embeddings = np.array(embeddings)
+        print("Embeddings loaded!!", flush = True)
         return names, embeddings
 
     def _calculate_embedding(self, img_tensor):
