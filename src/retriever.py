@@ -52,6 +52,32 @@ class EmbeddingRetriever:
         print("Embeddings loaded!!", flush = True)
         return names, embeddings
 
+    def query(self, lst_image, n_results = 5):
+        default_preprocessing = transforms.Compose([
+        transforms.Resize(224),
+        transforms.CenterCrop(224),
+        transforms.ToTensor(),
+        transforms.Normalize(mean = [0.485, 0.456, 0.406],
+                            std = [0.229, 0.224, 0.225])
+        ])
+
+        query_netvlads = []
+        for image in lst_image:
+            image = default_preprocessing(image).unsqueeze(0)
+            query_netvlads.append(self._calculate_embedding(image))
+        query_netvlads = np.array(query_netvlads)
+
+        similarity_matrix = np.einsum('id, jd -> ij', query_netvlads, self.netvlads)
+        sorted_matrix = np.argsort(similarity_matrix, axis = 1)
+        n_cols = sorted_matrix.shape[1]-1
+        results = []
+        for i, _ in enumerate(sorted_matrix):
+            row = []
+            for j in range(n_results):
+                row.append(self.names[sorted_matrix[i, n_cols - j]])
+            results.append(row)
+        return results
+    
     def _calculate_embedding(self, img_tensor):
         img_tensor = img_tensor.to(self.device)
         embedding = self.model(img_tensor)
