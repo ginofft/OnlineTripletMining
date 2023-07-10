@@ -28,7 +28,7 @@ class EmbeddingRetriever:
         if (self.path is None):
             self.path = Path('embeddings.h5')
         if (self.path.suffix != '.h5') :
-            self.path = self.path + '.h5'
+            self.path = self.path.with_suffix('.h5')
         self.path.parent.mkdir(exist_ok=True, parents = True)
         if (len(self.names) == 0) or (len(self.embeddings) == 0) or (len(self.names) == len(self.embeddings)):
             self._calculate_embeddings() 
